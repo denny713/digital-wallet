@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-create-extension-uuid.sql
+  - include:
+      file: db/changelog/002-create-table-banks.sql
+  - include:
+      file: db/changelog/003-create-table-users.sql
+  - include:
+      file: db/changelog/004-create-table-accounts.sql
+  - include:
+      file: db/changelog/005-create-table-wallets.sql
+  - include:
+      file: db/changelog/006-create-table-merchants.sql
+  - include:
+      file: db/changelog/007-create-table-topups.sql
+  - include:
+      file: db/changelog/008-create-table-withdraws.sql
+  - include:
+      file: db/changelog/009-create-table-transfers.sql
+  - include:
+      file: db/changelog/010-create-table-payments.sql
+  - include:
+      file: db/changelog/011-create-table-transactions.sql
