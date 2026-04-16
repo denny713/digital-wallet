@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wallet-api-config
+  namespace: digital-wallet
+  labels:
+    app.kubernetes.io/name: wallet-api
+    app.kubernetes.io/component: config
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://wallet-db-svc:5432/digital_wallet?useSSL=false&serverTimezone=UTC"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+  SPRING_LIQUIBASE_ENABLED: "true"
+  SPRING_LIQUIBASE_CHANGE_LOG: "classpath:db/db.changelog.yml"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "none"
+  SPRING_JPA_SHOW_SQL: "false"

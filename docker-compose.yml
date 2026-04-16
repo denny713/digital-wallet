@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  # --- PostgreSQL Database ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: wallet-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: digital_wallet
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p@ssw0rd
+    ports:
+      - "5432:5432"
+    volumes:
+      - wallet_pgdata:/var/lib/postgresql/data
+    networks:
+      - wallet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d digital_wallet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # --- Digital Wallet API ---
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wallet-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/digital_wallet?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
+      SPRING_LIQUIBASE_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    networks:
+      - wallet-network
+
+volumes:
+  wallet_pgdata:
+    driver: local
+
+networks:
+  wallet-network:
+    driver: bridge
